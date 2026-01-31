@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>TOEIC Writing – Part 1</title>
+  <title>TOEIC Writing – Task 1</title>
 
   <style>
     :root{
@@ -15,11 +15,11 @@
       --shadow:0 10px 28px rgba(17,24,39,.08);
       --primary:#2563eb;
       --primaryHover:#1d4ed8;
-      --ghost:#f9fafb;
-      --success:#16a34a;
-      --successHover:#15803d;
       --danger:#ef4444;
       --dangerHover:#dc2626;
+      --success:#16a34a;
+      --successHover:#15803d;
+      --ghost:#f9fafb;
       --radius:14px;
     }
 
@@ -31,13 +31,11 @@
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
       line-height:1.45;
     }
-
     .page{
       max-width: 980px;
       margin: 0 auto;
       padding: 28px 16px 64px;
     }
-
     .card{
       background:var(--card);
       border:1px solid var(--border);
@@ -45,7 +43,6 @@
       box-shadow:var(--shadow);
       padding: 24px;
     }
-
     .title{
       margin: 0;
       font-size: 22px;
@@ -54,12 +51,11 @@
       gap:10px;
       align-items:center;
     }
-
     .subtitle{
       margin: 10px 0 16px;
       color: var(--muted);
       font-size: 14px;
-      max-width: 75ch;
+      max-width: 78ch;
     }
 
     .prompt{
@@ -71,7 +67,7 @@
       padding: 14px 14px;
     }
     .prompt h2{
-      margin: 0 0 8px;
+      margin: 0 0 10px;
       font-size: 14px;
       color: #111827;
       display:flex;
@@ -86,18 +82,29 @@
       white-space: pre-wrap;
     }
 
-    .words{
+    .imgWrap{
       margin-top: 10px;
+      border:1px solid var(--border);
+      border-radius: 12px;
+      overflow:hidden;
+      background:#fff;
+    }
+    .imgWrap img{
+      display:block;
+      width:100%;
+      height:auto;
+    }
+
+    .words{
+      margin-top: 12px;
       font-size: 14px;
       color:#111827;
     }
-    .words em{
-      font-style: italic;
-    }
+    .words em{ font-style: italic; }
 
     textarea{
       width:100%;
-      min-height: 140px;
+      min-height: 150px;
       resize: vertical;
       padding: 12px;
       font-size: 14px;
@@ -107,15 +114,33 @@
       background: #fff;
     }
 
-    .row{
+    .meta{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      flex-wrap:wrap;
+      margin: 10px 0 10px;
+    }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 8px 10px;
+      border:1px solid var(--border);
+      border-radius:999px;
+      font-size:13px;
+      color:var(--muted);
+      background:#fafafa;
+    }
+
+    .controls{
       display:flex;
       gap:10px;
       flex-wrap:wrap;
-      margin-top: 10px;
+      margin: 10px 0 0;
       align-items:center;
       justify-content: space-between;
     }
-
     .leftBtns{
       display:flex;
       gap:10px;
@@ -131,6 +156,7 @@
       transition: transform .02s ease, background .15s ease, opacity .15s ease;
     }
     button:active{ transform: translateY(1px); }
+    button:disabled{ opacity:.55; cursor:not-allowed; }
 
     .btnPrimary{ background: var(--primary); color:#fff; }
     .btnPrimary:hover{ background: var(--primaryHover); }
@@ -154,13 +180,82 @@
       color: #374151;
     }
 
-    .statusline{
-      margin-top: 10px;
+    /* Saved drafts list (like takes) */
+    .saved{
+      margin-top: 18px;
+      border-top:1px solid var(--border);
+      padding-top: 16px;
+    }
+    .saved h3{
+      margin: 0 0 10px;
+      font-size: 16px;
+    }
+    .savedList{
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+    }
+    .savedItem{
+      border:1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px;
+      background:#fff;
+    }
+    .savedTop{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap: 10px;
+      flex-wrap:wrap;
+      margin-bottom: 10px;
+    }
+    .savedLabel{
+      display:flex;
+      gap:10px;
+      align-items:baseline;
+      flex-wrap:wrap;
+    }
+    .tag{
+      font-size:12px;
+      color:var(--muted);
+    }
+    .savedActions{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .linkBtn{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 8px 10px;
+      border:1px solid var(--border);
+      border-radius: 10px;
       font-size: 13px;
-      color: var(--muted);
+      text-decoration:none;
+      color: var(--text);
+      background:#fff;
+      cursor:pointer;
+    }
+    .linkBtn:hover{ background:#f9fafb; }
+    .dangerLink{
+      border-color:#fecaca;
+      color:#991b1b;
+      background:#fff5f5;
+    }
+    .dangerLink:hover{ background:#ffecec; }
+
+    .draftText{
+      white-space: pre-wrap;
+      background:#fafafa;
+      border:1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px;
+      font-size: 14px;
+      color:#111827;
     }
 
-    /* Return button bottom-right */
+    /* Return button bottom-right like your latest recorders */
     .returnWrap{
       margin-top: 18px;
       display:flex;
@@ -171,11 +266,11 @@
       color:#fff;
       border-radius: 12px;
       padding: 12px 16px;
-      font-weight: 600;
+      font-weight: 650;
     }
     .returnBtn:hover{ background: var(--primaryHover); }
 
-    /* Overlay */
+    /* PRO overlay */
     .overlay{
       position:fixed;
       inset:0;
@@ -196,45 +291,65 @@
     }
     .modal h3{ margin:0 0 8px; font-size:16px; }
     .modal p{ margin:0 0 12px; color:var(--muted); font-size:14px; line-height:1.55; }
-    .modal .row2{ display:flex; justify-content:flex-end; gap:10px; flex-wrap:wrap; }
+    .modal .row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
 
+    @media (min-width: 980px){
+      .card{ padding: 28px; }
+    }
   </style>
 </head>
 
 <body>
   <div class="page">
     <div class="card">
-      <h1 class="title">✍️ TOEIC Writing – Part 1</h1>
+      <h1 class="title">✍️ TOEIC Writing – Task 1</h1>
       <div class="subtitle">
-        Write <strong>one sentence</strong> based on the picture using the <strong>two words</strong> provided.
+        Write <strong>one complete sentence</strong> about the picture using the <strong>two words</strong> provided.
       </div>
 
       <div class="prompt">
         <h2>🖼️ Picture prompt</h2>
-        <p>(Insert your picture here in Rise, or describe it briefly here.)</p>
+        <p>Look at the picture carefully. Write one sentence that describes what is happening.</p>
+
+        <div class="imgWrap">
+          <!-- ✅ Use the file name (NOT the GitHub "blob" URL) -->
+          <img src="Writing-task-1_assets_office.jpg" alt="TOEIC Writing Task 1 picture">
+        </div>
 
         <div class="words">
           <strong>Words to use:</strong> <em id="words">schedule – discuss</em>
         </div>
       </div>
 
+      <div class="meta">
+        <div class="pill"><span>ℹ️</span><span id="status">Ready</span></div>
+      </div>
+
       <h2 style="font-size:14px; margin:0 0 8px;">Your sentence</h2>
       <textarea id="answer" placeholder="Type your sentence here..."></textarea>
 
-      <div class="row">
+      <div class="controls">
         <div class="leftBtns">
-          <button class="btnSuccess" id="saveBtn">💾 Save draft</button>
-          <button class="btnGhost" id="copyBtn">📋 Copy</button>
-          <button class="btnGhost" id="downloadBtn">⬇️ Download</button>
-          <button class="btnDanger" id="clearBtn">🗑️ Clear</button>
+          <button id="saveDraft" class="btnSuccess">💾 Save draft</button>
+          <button id="copy" class="btnGhost">📋 Copy</button>
+          <button id="download" class="btnGhost">⬇️ Download</button>
+          <button id="clear" class="btnDanger">🗑️ Clear</button>
         </div>
-
-        <div class="statusline" id="status">Draft not saved yet.</div>
       </div>
 
       <div class="hint">
-        Your writing is stored only on this device/browser. If you want to keep it, download it and rename the file.
-        On a shared computer, clear your text before leaving.
+        Your saved drafts stay on this device/browser only. If you want to keep them, download and rename your files.
+        On a shared computer, remove your drafts when finished.
+      </div>
+
+      <div class="saved">
+        <h3>Saved drafts (for comparison)</h3>
+        <div class="savedList" id="savedList"></div>
       </div>
 
       <div class="returnWrap">
@@ -243,6 +358,7 @@
     </div>
   </div>
 
+  <!-- PRO overlay -->
   <div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
     <div class="modal">
       <h3 id="modalTitle">Return to the module</h3>
@@ -250,30 +366,30 @@
         Your browser may block automatic tab closing.
         Please <strong>close this tab manually</strong> to return to the e-learning module.
       </p>
-      <div class="row2">
-        <button class="btnPrimary" id="okBtn">OK</button>
+      <div class="row">
+        <button id="okBtn" class="btnPrimary">OK</button>
       </div>
     </div>
   </div>
 
   <script>
-    const answer = document.getElementById("answer");
-    const status = document.getElementById("status");
+    const answerEl = document.getElementById("answer");
+    const statusEl = document.getElementById("status");
 
-    const saveBtn = document.getElementById("saveBtn");
-    const copyBtn = document.getElementById("copyBtn");
-    const downloadBtn = document.getElementById("downloadBtn");
-    const clearBtn = document.getElementById("clearBtn");
+    const saveBtn = document.getElementById("saveDraft");
+    const copyBtn = document.getElementById("copy");
+    const dlBtn   = document.getElementById("download");
+    const clearBtn= document.getElementById("clear");
+
+    const savedList = document.getElementById("savedList");
 
     const returnBtn = document.getElementById("returnBtn");
-    const overlay = document.getElementById("overlay");
-    const okBtn = document.getElementById("okBtn");
+    const overlay   = document.getElementById("overlay");
+    const okBtn     = document.getElementById("okBtn");
 
-    const STORAGE_KEY = "toeic_writing_part1_draft";
+    const STORAGE_KEY = "toeic_writing_task_1_saved_drafts_v1";
 
-    function setStatus(msg){
-      status.textContent = msg;
-    }
+    function setStatus(msg){ statusEl.textContent = msg; }
 
     function showOverlay(){ overlay.style.display = "flex"; }
     function hideOverlay(){ overlay.style.display = "none"; }
@@ -281,56 +397,172 @@
     okBtn.addEventListener("click", hideOverlay);
     overlay.addEventListener("click", (e) => { if(e.target === overlay) hideOverlay(); });
 
-    // Load draft
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if(saved){
-      answer.value = saved;
-      setStatus("Draft restored from this device.");
+    function escapeHtml(str){
+      return str
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;");
     }
 
+    function loadDrafts(){
+      try{
+        const raw = localStorage.getItem(STORAGE_KEY);
+        const drafts = raw ? JSON.parse(raw) : [];
+        return Array.isArray(drafts) ? drafts : [];
+      } catch {
+        return [];
+      }
+    }
+
+    function saveDrafts(drafts){
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(drafts));
+    }
+
+    function renderDrafts(){
+      const drafts = loadDrafts();
+      savedList.innerHTML = "";
+
+      if(drafts.length === 0){
+        const empty = document.createElement("div");
+        empty.className = "pill";
+        empty.textContent = "No drafts saved yet.";
+        savedList.appendChild(empty);
+        return;
+      }
+
+      drafts.forEach((d, idx) => {
+        const item = document.createElement("div");
+        item.className = "savedItem";
+
+        const top = document.createElement("div");
+        top.className = "savedTop";
+
+        const label = document.createElement("div");
+        label.className = "savedLabel";
+        label.innerHTML = `<strong>Draft ${idx+1}</strong> <span class="tag">• saved ${new Date(d.savedAt).toLocaleString()}</span>`;
+
+        const actions = document.createElement("div");
+        actions.className = "savedActions";
+
+        const restoreBtn = document.createElement("a");
+        restoreBtn.href = "#";
+        restoreBtn.className = "linkBtn";
+        restoreBtn.textContent = "↩️ Restore";
+        restoreBtn.onclick = (e) => {
+          e.preventDefault();
+          answerEl.value = d.text || "";
+          setStatus(`Draft ${idx+1} restored.`);
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        };
+
+        const copyBtn2 = document.createElement("a");
+        copyBtn2.href = "#";
+        copyBtn2.className = "linkBtn";
+        copyBtn2.textContent = "📋 Copy";
+        copyBtn2.onclick = async (e) => {
+          e.preventDefault();
+          try{
+            await navigator.clipboard.writeText(d.text || "");
+            setStatus(`Draft ${idx+1} copied.`);
+          } catch {
+            setStatus("Copy failed. Please copy manually.");
+          }
+        };
+
+        const downloadBtn = document.createElement("a");
+        downloadBtn.href = "#";
+        downloadBtn.className = "linkBtn";
+        downloadBtn.textContent = "⬇️ Download";
+        downloadBtn.onclick = (e) => {
+          e.preventDefault();
+          const blob = new Blob([d.text || ""], { type:"text/plain" });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = `toeic-writing-task-1-draft-${idx+1}.txt`;
+          a.click();
+          setTimeout(() => URL.revokeObjectURL(url), 400);
+          setStatus(`Draft ${idx+1} downloaded.`);
+        };
+
+        const removeBtn = document.createElement("a");
+        removeBtn.href = "#";
+        removeBtn.className = "linkBtn dangerLink";
+        removeBtn.textContent = "🗑️ Remove";
+        removeBtn.onclick = (e) => {
+          e.preventDefault();
+          const draftsNow = loadDrafts();
+          draftsNow.splice(idx, 1);
+          saveDrafts(draftsNow);
+          renderDrafts();
+          setStatus("Draft removed.");
+        };
+
+        actions.appendChild(restoreBtn);
+        actions.appendChild(copyBtn2);
+        actions.appendChild(downloadBtn);
+        actions.appendChild(removeBtn);
+
+        top.appendChild(label);
+        top.appendChild(actions);
+
+        const textBox = document.createElement("div");
+        textBox.className = "draftText";
+        textBox.innerHTML = escapeHtml(d.text || "");
+
+        item.appendChild(top);
+        item.appendChild(textBox);
+        savedList.appendChild(item);
+      });
+    }
+
+    // Initial render
+    renderDrafts();
+    setStatus("Ready");
+
     saveBtn.addEventListener("click", () => {
-      localStorage.setItem(STORAGE_KEY, answer.value);
-      setStatus("Draft saved on this device.");
+      const text = (answerEl.value || "").trim();
+      if(!text){
+        setStatus("Type your sentence first.");
+        return;
+      }
+      const drafts = loadDrafts();
+      drafts.push({ text, savedAt: Date.now() });
+      saveDrafts(drafts);
+      renderDrafts();
+      setStatus(`Draft ${drafts.length} saved.`);
     });
 
     copyBtn.addEventListener("click", async () => {
       try{
-        await navigator.clipboard.writeText(answer.value);
-        setStatus("Copied to clipboard.");
-      } catch(e){
-        // fallback
-        answer.select();
-        document.execCommand("copy");
-        setStatus("Copied to clipboard.");
+        await navigator.clipboard.writeText(answerEl.value || "");
+        setStatus("Copied.");
+      } catch {
+        setStatus("Copy failed. Please copy manually.");
       }
     });
 
-    downloadBtn.addEventListener("click", () => {
-      const text = answer.value.trim();
-      const blob = new Blob([text], {type:"text/plain"});
+    dlBtn.addEventListener("click", () => {
+      const text = (answerEl.value || "").trim();
+      const blob = new Blob([text], { type:"text/plain" });
       const url = URL.createObjectURL(blob);
-
       const a = document.createElement("a");
       a.href = url;
-      a.download = `toeic-writing-part1-${new Date().toISOString().slice(0,10)}.txt`;
+      a.download = `toeic-writing-task-1-${new Date().toISOString().slice(0,10)}.txt`;
       a.click();
-
-      URL.revokeObjectURL(url);
+      setTimeout(() => URL.revokeObjectURL(url), 400);
       setStatus("Downloaded.");
     });
 
     clearBtn.addEventListener("click", () => {
-      answer.value = "";
-      localStorage.removeItem(STORAGE_KEY);
-      setStatus("Cleared (and local draft removed).");
+      answerEl.value = "";
+      setStatus("Cleared.");
     });
 
     returnBtn.addEventListener("click", (e) => {
       e.preventDefault();
       setStatus("Returning to the module…");
-
       window.close();
-
       setTimeout(() => {
         showOverlay();
         setStatus("Please close this tab to return to the module.");
