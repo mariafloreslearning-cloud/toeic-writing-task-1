@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>TOEIC Writing – Task 1</title>
+  <title>TOEIC Writing - Task 1</title>
 
   <style>
     :root{
@@ -31,11 +31,13 @@
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
       line-height:1.45;
     }
+
     .page{
       max-width: 980px;
       margin: 0 auto;
       padding: 28px 16px 64px;
     }
+
     .card{
       background:var(--card);
       border:1px solid var(--border);
@@ -43,6 +45,7 @@
       box-shadow:var(--shadow);
       padding: 24px;
     }
+
     .title{
       margin: 0;
       font-size: 22px;
@@ -51,11 +54,12 @@
       gap:10px;
       align-items:center;
     }
+
     .subtitle{
       margin: 10px 0 16px;
       color: var(--muted);
       font-size: 14px;
-      max-width: 78ch;
+      max-width: 72ch;
     }
 
     .prompt{
@@ -74,8 +78,9 @@
       align-items:center;
       gap:8px;
     }
+
     .prompt p{
-      margin: 0;
+      margin: 0 0 12px;
       color:#111827;
       font-size: 14px;
       line-height: 1.6;
@@ -84,34 +89,32 @@
 
     .imgWrap{
       margin-top: 10px;
-      border:1px solid var(--border);
-      border-radius: 12px;
-      overflow:hidden;
       background:#fff;
+      border:1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px;
+      overflow:hidden;
     }
     .imgWrap img{
+      width: 100%;
+      height: auto;
       display:block;
-      width:100%;
-      height:auto;
+      border-radius: 12px;
     }
 
-    .words{
+    .wordsLine{
       margin-top: 12px;
       font-size: 14px;
       color:#111827;
     }
-    .words em{ font-style: italic; }
+    .wordsLine em{
+      font-style: italic;
+    }
 
-    textarea{
-      width:100%;
-      min-height: 150px;
-      resize: vertical;
-      padding: 12px;
-      font-size: 14px;
-      border:1px solid var(--border);
-      border-radius: 12px;
-      outline: none;
-      background: #fff;
+    .instruction{
+      margin-top: 14px;
+      font-size: 13px;
+      color: #4b5563;
     }
 
     .meta{
@@ -119,7 +122,7 @@
       gap:12px;
       align-items:center;
       flex-wrap:wrap;
-      margin: 10px 0 10px;
+      margin: 10px 0 14px;
     }
     .pill{
       display:inline-flex;
@@ -137,16 +140,8 @@
       display:flex;
       gap:10px;
       flex-wrap:wrap;
-      margin: 10px 0 0;
-      align-items:center;
-      justify-content: space-between;
+      margin: 8px 0 12px;
     }
-    .leftBtns{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-
     button{
       border:0;
       border-radius: 10px;
@@ -161,14 +156,55 @@
     .btnPrimary{ background: var(--primary); color:#fff; }
     .btnPrimary:hover{ background: var(--primaryHover); }
 
+    .btnDanger{ background: var(--danger); color:#fff; }
+    .btnDanger:hover{ background: var(--dangerHover); }
+
     .btnGhost{ background: var(--ghost); color: var(--text); border:1px solid var(--border); }
     .btnGhost:hover{ background:#f3f4f6; }
 
     .btnSuccess{ background: var(--success); color:#fff; }
     .btnSuccess:hover{ background: var(--successHover); }
 
-    .btnDanger{ background: var(--danger); color:#fff; }
-    .btnDanger:hover{ background: var(--dangerHover); }
+    .btnDownload{ background:#0f172a; color:#fff; }
+    .btnDownload:hover{ background:#111827; }
+
+    /* ✅ More visible return button */
+    .btnReturn{
+      background: var(--primary);
+      color:#fff;
+      padding: 12px 18px;
+      font-weight: 700;
+      box-shadow: 0 10px 22px rgba(37,99,235,.18);
+    }
+    .btnReturn:hover{ background: var(--primaryHover); }
+
+    textarea{
+      width:100%;
+      min-height: 140px;
+      margin-top: 6px;
+      padding: 12px;
+      border:1px solid var(--border);
+      border-radius: 12px;
+      font-size: 14px;
+      line-height: 1.55;
+      outline: none;
+      resize: vertical;
+      background:#fff;
+    }
+
+    /* ✅ Bottom bar layout: left download, right return */
+    .bottomBar{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin-top: 10px;
+    }
+    .bottomBar .spacer{ flex:1; }
+    @media (max-width: 520px){
+      .bottomBar button{ width:100%; }
+      .bottomBar .spacer{ display:none; }
+    }
 
     .hint{
       margin-top: 14px;
@@ -180,7 +216,6 @@
       color: #374151;
     }
 
-    /* Saved drafts list (like takes) */
     .saved{
       margin-top: 18px;
       border-top:1px solid var(--border);
@@ -245,30 +280,16 @@
     }
     .dangerLink:hover{ background:#ffecec; }
 
-    .draftText{
-      white-space: pre-wrap;
+    .draftBox{
       background:#fafafa;
       border:1px solid var(--border);
       border-radius: 12px;
       padding: 10px;
+      white-space: pre-wrap;
       font-size: 14px;
+      line-height: 1.55;
       color:#111827;
     }
-
-    /* Return button bottom-right like your latest recorders */
-    .returnWrap{
-      margin-top: 18px;
-      display:flex;
-      justify-content:flex-end;
-    }
-    .returnBtn{
-      background: var(--primary);
-      color:#fff;
-      border-radius: 12px;
-      padding: 12px 16px;
-      font-weight: 650;
-    }
-    .returnBtn:hover{ background: var(--primaryHover); }
 
     /* PRO overlay */
     .overlay{
@@ -289,8 +310,16 @@
       box-shadow:0 18px 50px rgba(0,0,0,.25);
       padding:18px;
     }
-    .modal h3{ margin:0 0 8px; font-size:16px; }
-    .modal p{ margin:0 0 12px; color:var(--muted); font-size:14px; line-height:1.55; }
+    .modal h3{
+      margin:0 0 8px;
+      font-size:16px;
+    }
+    .modal p{
+      margin:0 0 12px;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.55;
+    }
     .modal .row{
       display:flex;
       gap:10px;
@@ -309,51 +338,55 @@
     <div class="card">
       <h1 class="title">✍️ TOEIC Writing – Task 1</h1>
       <div class="subtitle">
-        Write <strong>one complete sentence</strong> about the picture using the <strong>two words</strong> provided.
+        Write <strong>one complete sentence</strong> based on the picture using the <strong>two words</strong> provided.
       </div>
 
-      <div class="prompt">
-        <h2>🖼️ Picture prompt</h2>
+      <div class="prompt" id="promptBox">
+        <h2>🖼️ Write a sentence based on the picture</h2>
+
         <p>Look at the picture carefully. Write one sentence that describes what is happening.</p>
 
         <div class="imgWrap">
-          <!-- ✅ Use the file name (NOT the GitHub "blob" URL) -->
-          <img src="Writing-task-1_assets_office.jpg" alt="TOEIC Writing Task 1 picture">
+          <img
+            src="Writing-task-1_assets_office.jpg"
+            alt="TOEIC Writing Task 1 picture"
+          />
         </div>
 
-        <div class="words">
-          <strong>Words to use:</strong> <em id="words">schedule – discuss</em>
+        <div class="wordsLine">
+          <strong>Words to use:</strong> <em>schedule – discuss</em>
         </div>
+
+        <p class="instruction">
+          Write one sentence and make sure you use both words correctly.
+        </p>
       </div>
 
       <div class="meta">
         <div class="pill"><span>ℹ️</span><span id="status">Ready</span></div>
       </div>
 
-      <h2 style="font-size:14px; margin:0 0 8px;">Your sentence</h2>
-      <textarea id="answer" placeholder="Type your sentence here..."></textarea>
-
       <div class="controls">
-        <div class="leftBtns">
-          <button id="saveDraft" class="btnSuccess">💾 Save draft</button>
-          <button id="copy" class="btnGhost">📋 Copy</button>
-          <button id="download" class="btnGhost">⬇️ Download</button>
-          <button id="clear" class="btnDanger">🗑️ Clear</button>
-        </div>
+        <button id="save" class="btnSuccess">Save this draft</button>
+        <button id="reset" class="btnGhost">Reset</button>
+      </div>
+
+      <textarea id="writer" placeholder="Type your sentence here..."></textarea>
+
+      <div class="bottomBar">
+        <button id="download" class="btnDownload" disabled>⬇️ Download current draft</button>
+        <div class="spacer"></div>
+        <button id="returnBtn" class="btnReturn">↩️ Return to the module</button>
       </div>
 
       <div class="hint">
-        Your saved drafts stay on this device/browser only. If you want to keep them, download and rename your files.
-        On a shared computer, remove your drafts when finished.
+        Your saved drafts stay on this device/browser only. If you’re on a shared computer, delete your drafts when finished.
+        If you want to keep them, download and rename your files.
       </div>
 
       <div class="saved">
-        <h3>Saved drafts (for comparison)</h3>
+        <h3>Saved drafts</h3>
         <div class="savedList" id="savedList"></div>
-      </div>
-
-      <div class="returnWrap">
-        <button class="returnBtn" id="returnBtn">⬅️ Return to the module</button>
       </div>
     </div>
   </div>
@@ -373,29 +406,98 @@
   </div>
 
   <script>
-    const answerEl = document.getElementById("answer");
+    /***********************
+     * IndexedDB (persist drafts like takes)
+     ***********************/
+    const DB_NAME = "toeic_writing_db_task1";
+    const DB_VERSION = 1;
+    const STORE = "drafts";
+
+    function openDB(){
+      return new Promise((resolve, reject) => {
+        const req = indexedDB.open(DB_NAME, DB_VERSION);
+        req.onupgradeneeded = () => {
+          const db = req.result;
+          if(!db.objectStoreNames.contains(STORE)){
+            const store = db.createObjectStore(STORE, { keyPath: "id", autoIncrement: true });
+            store.createIndex("createdAt", "createdAt");
+          }
+        };
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    async function addDraftToDB({ text }){
+      const db = await openDB();
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction(STORE, "readwrite");
+        const store = tx.objectStore(STORE);
+        const req = store.add({
+          text,
+          createdAt: Date.now()
+        });
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    async function getAllDraftsFromDB(){
+      const db = await openDB();
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction(STORE, "readonly");
+        const store = tx.objectStore(STORE);
+        const req = store.getAll();
+        req.onsuccess = () => resolve(req.result || []);
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    async function deleteDraftFromDB(id){
+      const db = await openDB();
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction(STORE, "readwrite");
+        const store = tx.objectStore(STORE);
+        const req = store.delete(id);
+        req.onsuccess = () => resolve(true);
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    /***********************
+     * UI
+     ***********************/
+    const saveBtn = document.getElementById("save");
+    const resetBtn = document.getElementById("reset");
+    const dlBtn = document.getElementById("download");
+    const returnBtn = document.getElementById("returnBtn");
+
+    const writer = document.getElementById("writer");
     const statusEl = document.getElementById("status");
-
-    const saveBtn = document.getElementById("saveDraft");
-    const copyBtn = document.getElementById("copy");
-    const dlBtn   = document.getElementById("download");
-    const clearBtn= document.getElementById("clear");
-
     const savedList = document.getElementById("savedList");
 
-    const returnBtn = document.getElementById("returnBtn");
-    const overlay   = document.getElementById("overlay");
-    const okBtn     = document.getElementById("okBtn");
-
-    const STORAGE_KEY = "toeic_writing_task_1_saved_drafts_v1";
-
-    function setStatus(msg){ statusEl.textContent = msg; }
+    const overlay = document.getElementById("overlay");
+    const okBtn = document.getElementById("okBtn");
 
     function showOverlay(){ overlay.style.display = "flex"; }
     function hideOverlay(){ overlay.style.display = "none"; }
 
     okBtn.addEventListener("click", hideOverlay);
     overlay.addEventListener("click", (e) => { if(e.target === overlay) hideOverlay(); });
+
+    function setStatus(msg){ statusEl.textContent = msg; }
+
+    function downloadText(text, filename){
+      const blob = new Blob([text], { type: "text/plain" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 500);
+    }
 
     function escapeHtml(str){
       return str
@@ -404,23 +506,91 @@
         .replaceAll(">","&gt;");
     }
 
-    function loadDrafts(){
-      try{
-        const raw = localStorage.getItem(STORAGE_KEY);
-        const drafts = raw ? JSON.parse(raw) : [];
-        return Array.isArray(drafts) ? drafts : [];
-      } catch {
-        return [];
-      }
+    function renderSavedDraft({ id, text, createdAt }, draftNumber){
+      const item = document.createElement("div");
+      item.className = "savedItem";
+      item.dataset.id = String(id);
+
+      const top = document.createElement("div");
+      top.className = "savedTop";
+
+      const label = document.createElement("div");
+      label.className = "savedLabel";
+      label.innerHTML = `<strong>Draft ${draftNumber}</strong> <span class="tag">• saved ${new Date(createdAt).toLocaleString()}</span>`;
+
+      const actions = document.createElement("div");
+      actions.className = "savedActions";
+
+      const restoreBtn = document.createElement("a");
+      restoreBtn.href = "#";
+      restoreBtn.className = "linkBtn";
+      restoreBtn.textContent = "↩️ Restore";
+      restoreBtn.onclick = (e) => {
+        e.preventDefault();
+        writer.value = text || "";
+        dlBtn.disabled = !(writer.value.trim());
+        setStatus(`Draft ${draftNumber} restored.`);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      };
+
+      const copyBtn = document.createElement("a");
+      copyBtn.href = "#";
+      copyBtn.className = "linkBtn";
+      copyBtn.textContent = "📋 Copy";
+      copyBtn.onclick = async (e) => {
+        e.preventDefault();
+        try{
+          await navigator.clipboard.writeText(text || "");
+          setStatus(`Draft ${draftNumber} copied.`);
+        } catch {
+          setStatus("Copy failed. Please copy manually.");
+        }
+      };
+
+      const downloadBtn = document.createElement("a");
+      downloadBtn.href = "#";
+      downloadBtn.className = "linkBtn";
+      downloadBtn.textContent = "⬇️ Download";
+      downloadBtn.onclick = (e) => {
+        e.preventDefault();
+        downloadText(text || "", `writing-task1-draft-${draftNumber}.txt`);
+        setStatus(`Draft ${draftNumber} downloaded.`);
+      };
+
+      const removeBtn = document.createElement("a");
+      removeBtn.href = "#";
+      removeBtn.className = "linkBtn dangerLink";
+      removeBtn.textContent = "🗑️ Remove";
+      removeBtn.onclick = async (e) => {
+        e.preventDefault();
+        await deleteDraftFromDB(id);
+        item.remove();
+        setStatus("Draft removed.");
+        await loadSavedDrafts(); // renumber
+      };
+
+      actions.appendChild(restoreBtn);
+      actions.appendChild(copyBtn);
+      actions.appendChild(downloadBtn);
+      actions.appendChild(removeBtn);
+
+      top.appendChild(label);
+      top.appendChild(actions);
+
+      const box = document.createElement("div");
+      box.className = "draftBox";
+      box.innerHTML = escapeHtml(text || "");
+
+      item.appendChild(top);
+      item.appendChild(box);
+
+      return item;
     }
 
-    function saveDrafts(drafts){
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(drafts));
-    }
-
-    function renderDrafts(){
-      const drafts = loadDrafts();
+    async function loadSavedDrafts(){
       savedList.innerHTML = "";
+      const drafts = await getAllDraftsFromDB();
+      drafts.sort((a,b) => a.createdAt - b.createdAt); // Draft 1 at top
 
       if(drafts.length === 0){
         const empty = document.createElement("div");
@@ -431,138 +601,59 @@
       }
 
       drafts.forEach((d, idx) => {
-        const item = document.createElement("div");
-        item.className = "savedItem";
-
-        const top = document.createElement("div");
-        top.className = "savedTop";
-
-        const label = document.createElement("div");
-        label.className = "savedLabel";
-        label.innerHTML = `<strong>Draft ${idx+1}</strong> <span class="tag">• saved ${new Date(d.savedAt).toLocaleString()}</span>`;
-
-        const actions = document.createElement("div");
-        actions.className = "savedActions";
-
-        const restoreBtn = document.createElement("a");
-        restoreBtn.href = "#";
-        restoreBtn.className = "linkBtn";
-        restoreBtn.textContent = "↩️ Restore";
-        restoreBtn.onclick = (e) => {
-          e.preventDefault();
-          answerEl.value = d.text || "";
-          setStatus(`Draft ${idx+1} restored.`);
-          window.scrollTo({ top: 0, behavior: "smooth" });
-        };
-
-        const copyBtn2 = document.createElement("a");
-        copyBtn2.href = "#";
-        copyBtn2.className = "linkBtn";
-        copyBtn2.textContent = "📋 Copy";
-        copyBtn2.onclick = async (e) => {
-          e.preventDefault();
-          try{
-            await navigator.clipboard.writeText(d.text || "");
-            setStatus(`Draft ${idx+1} copied.`);
-          } catch {
-            setStatus("Copy failed. Please copy manually.");
-          }
-        };
-
-        const downloadBtn = document.createElement("a");
-        downloadBtn.href = "#";
-        downloadBtn.className = "linkBtn";
-        downloadBtn.textContent = "⬇️ Download";
-        downloadBtn.onclick = (e) => {
-          e.preventDefault();
-          const blob = new Blob([d.text || ""], { type:"text/plain" });
-          const url = URL.createObjectURL(blob);
-          const a = document.createElement("a");
-          a.href = url;
-          a.download = `toeic-writing-task-1-draft-${idx+1}.txt`;
-          a.click();
-          setTimeout(() => URL.revokeObjectURL(url), 400);
-          setStatus(`Draft ${idx+1} downloaded.`);
-        };
-
-        const removeBtn = document.createElement("a");
-        removeBtn.href = "#";
-        removeBtn.className = "linkBtn dangerLink";
-        removeBtn.textContent = "🗑️ Remove";
-        removeBtn.onclick = (e) => {
-          e.preventDefault();
-          const draftsNow = loadDrafts();
-          draftsNow.splice(idx, 1);
-          saveDrafts(draftsNow);
-          renderDrafts();
-          setStatus("Draft removed.");
-        };
-
-        actions.appendChild(restoreBtn);
-        actions.appendChild(copyBtn2);
-        actions.appendChild(downloadBtn);
-        actions.appendChild(removeBtn);
-
-        top.appendChild(label);
-        top.appendChild(actions);
-
-        const textBox = document.createElement("div");
-        textBox.className = "draftText";
-        textBox.innerHTML = escapeHtml(d.text || "");
-
-        item.appendChild(top);
-        item.appendChild(textBox);
-        savedList.appendChild(item);
+        savedList.appendChild(renderSavedDraft(d, idx + 1));
       });
     }
 
-    // Initial render
-    renderDrafts();
-    setStatus("Ready");
+    function syncCurrentDownloadState(){
+      dlBtn.disabled = !(writer.value.trim());
+    }
 
-    saveBtn.addEventListener("click", () => {
-      const text = (answerEl.value || "").trim();
+    // Init
+    setStatus("Ready");
+    loadSavedDrafts().catch(() => {});
+    syncCurrentDownloadState();
+
+    writer.addEventListener("input", syncCurrentDownloadState);
+
+    saveBtn.onclick = async () => {
+      const text = (writer.value || "").trim();
       if(!text){
-        setStatus("Type your sentence first.");
+        setStatus("Write your sentence first.");
         return;
       }
-      const drafts = loadDrafts();
-      drafts.push({ text, savedAt: Date.now() });
-      saveDrafts(drafts);
-      renderDrafts();
-      setStatus(`Draft ${drafts.length} saved.`);
-    });
-
-    copyBtn.addEventListener("click", async () => {
       try{
-        await navigator.clipboard.writeText(answerEl.value || "");
-        setStatus("Copied.");
-      } catch {
-        setStatus("Copy failed. Please copy manually.");
+        setStatus("Saving draft…");
+        await addDraftToDB({ text });
+        await loadSavedDrafts();
+        setStatus("Draft saved. You can write another one to compare.");
+      } catch(err){
+        console.error(err);
+        setStatus("Save failed (storage blocked?)");
+        alert("Saving failed. Your browser may be blocking storage for this page.");
       }
-    });
+    };
 
-    dlBtn.addEventListener("click", () => {
-      const text = (answerEl.value || "").trim();
-      const blob = new Blob([text], { type:"text/plain" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `toeic-writing-task-1-${new Date().toISOString().slice(0,10)}.txt`;
-      a.click();
-      setTimeout(() => URL.revokeObjectURL(url), 400);
-      setStatus("Downloaded.");
-    });
+    resetBtn.onclick = () => {
+      writer.value = "";
+      syncCurrentDownloadState();
+      setStatus("Reset.");
+    };
 
-    clearBtn.addEventListener("click", () => {
-      answerEl.value = "";
-      setStatus("Cleared.");
-    });
+    dlBtn.onclick = () => {
+      const text = (writer.value || "").trim();
+      if(!text) return;
+      downloadText(text, `writing-task1-${new Date().toISOString().slice(0,10)}.txt`);
+      setStatus("Downloaded current draft.");
+    };
 
+    // PRO return: try close, then overlay
     returnBtn.addEventListener("click", (e) => {
       e.preventDefault();
       setStatus("Returning to the module…");
+
       window.close();
+
       setTimeout(() => {
         showOverlay();
         setStatus("Please close this tab to return to the module.");
