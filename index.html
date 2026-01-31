@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Voice Recorder</title>
+  <title>TOEIC Writing – Part 1</title>
 
   <style>
     :root{
@@ -15,11 +15,11 @@
       --shadow:0 10px 28px rgba(17,24,39,.08);
       --primary:#2563eb;
       --primaryHover:#1d4ed8;
-      --danger:#ef4444;
-      --dangerHover:#dc2626;
+      --ghost:#f9fafb;
       --success:#16a34a;
       --successHover:#15803d;
-      --ghost:#f9fafb;
+      --danger:#ef4444;
+      --dangerHover:#dc2626;
       --radius:14px;
     }
 
@@ -59,7 +59,7 @@
       margin: 10px 0 16px;
       color: var(--muted);
       font-size: 14px;
-      max-width: 72ch;
+      max-width: 75ch;
     }
 
     .prompt{
@@ -71,61 +71,57 @@
       padding: 14px 14px;
     }
     .prompt h2{
-      margin: 0 0 10px;
+      margin: 0 0 8px;
       font-size: 14px;
       color: #111827;
       display:flex;
       align-items:center;
       gap:8px;
     }
-
-    /* Text block */
-    .promptText{
+    .prompt p{
       margin: 0;
       color:#111827;
       font-size: 14px;
       line-height: 1.6;
       white-space: pre-wrap;
-      font-style: italic; /* ✅ only the text is italic */
     }
 
-    .instruction{
-      margin-top: 14px;  /* ✅ extra empty line before instructions */
-      font-size: 13px;
-      color: #4b5563;
-      font-style: normal;
+    .words{
+      margin-top: 10px;
+      font-size: 14px;
+      color:#111827;
+    }
+    .words em{
+      font-style: italic;
     }
 
-    .meta{
-      display:flex;
-      gap:12px;
-      align-items:center;
-      flex-wrap:wrap;
-      margin: 10px 0 14px;
-    }
-    .pill{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding: 8px 10px;
+    textarea{
+      width:100%;
+      min-height: 140px;
+      resize: vertical;
+      padding: 12px;
+      font-size: 14px;
       border:1px solid var(--border);
-      border-radius:999px;
-      font-size:13px;
-      color:var(--muted);
-      background:#fafafa;
-    }
-    .timer{
-      font-weight: 700;
-      color: var(--text);
-      font-variant-numeric: tabular-nums;
+      border-radius: 12px;
+      outline: none;
+      background: #fff;
     }
 
-    .controls{
+    .row{
       display:flex;
       gap:10px;
       flex-wrap:wrap;
-      margin: 8px 0 12px;
+      margin-top: 10px;
+      align-items:center;
+      justify-content: space-between;
     }
+
+    .leftBtns{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
     button{
       border:0;
       border-radius: 10px;
@@ -135,13 +131,9 @@
       transition: transform .02s ease, background .15s ease, opacity .15s ease;
     }
     button:active{ transform: translateY(1px); }
-    button:disabled{ opacity:.55; cursor:not-allowed; }
 
     .btnPrimary{ background: var(--primary); color:#fff; }
     .btnPrimary:hover{ background: var(--primaryHover); }
-
-    .btnDanger{ background: var(--danger); color:#fff; }
-    .btnDanger:hover{ background: var(--dangerHover); }
 
     .btnGhost{ background: var(--ghost); color: var(--text); border:1px solid var(--border); }
     .btnGhost:hover{ background:#f3f4f6; }
@@ -149,39 +141,8 @@
     .btnSuccess{ background: var(--success); color:#fff; }
     .btnSuccess:hover{ background: var(--successHover); }
 
-    .btnDownload{ background:#0f172a; color:#fff; }
-    .btnDownload:hover{ background:#111827; }
-
-    /* ✅ Make Return button more visible */
-    .btnReturn{
-      background: var(--primary);
-      color:#fff;
-      padding: 12px 18px;
-      font-weight: 700;
-      box-shadow: 0 10px 22px rgba(37,99,235,.18);
-    }
-    .btnReturn:hover{ background: var(--primaryHover); }
-
-    audio{
-      width: 100%;
-      margin-top: 10px;
-    }
-
-    /* ✅ Bottom bar: Download left, Return right */
-    .bottomBar{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
-      margin-top: 10px;
-    }
-    .bottomBar .spacer{ flex:1; }
-    @media (max-width: 520px){
-      .bottomBar button{
-        width: 100%;
-      }
-      .bottomBar .spacer{ display:none; }
-    }
+    .btnDanger{ background: var(--danger); color:#fff; }
+    .btnDanger:hover{ background: var(--dangerHover); }
 
     .hint{
       margin-top: 14px;
@@ -193,71 +154,28 @@
       color: #374151;
     }
 
-    .saved{
-      margin-top: 18px;
-      border-top:1px solid var(--border);
-      padding-top: 16px;
-    }
-    .saved h3{
-      margin: 0 0 10px;
-      font-size: 16px;
-    }
-    .savedList{
-      display:flex;
-      flex-direction:column;
-      gap: 10px;
-    }
-    .savedItem{
-      border:1px solid var(--border);
-      border-radius: 14px;
-      padding: 12px;
-      background:#fff;
-    }
-    .savedTop{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap: 10px;
-      flex-wrap:wrap;
-      margin-bottom: 8px;
-    }
-    .savedLabel{
-      display:flex;
-      gap:10px;
-      align-items:baseline;
-      flex-wrap:wrap;
-    }
-    .tag{
-      font-size:12px;
-      color:var(--muted);
-    }
-    .savedActions{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-    }
-    .linkBtn{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding: 8px 10px;
-      border:1px solid var(--border);
-      border-radius: 10px;
+    .statusline{
+      margin-top: 10px;
       font-size: 13px;
-      text-decoration:none;
-      color: var(--text);
-      background:#fff;
-      cursor:pointer;
+      color: var(--muted);
     }
-    .linkBtn:hover{ background:#f9fafb; }
-    .dangerLink{
-      border-color:#fecaca;
-      color:#991b1b;
-      background:#fff5f5;
-    }
-    .dangerLink:hover{ background:#ffecec; }
 
-    /* PRO modal overlay */
+    /* Return button bottom-right */
+    .returnWrap{
+      margin-top: 18px;
+      display:flex;
+      justify-content:flex-end;
+    }
+    .returnBtn{
+      background: var(--primary);
+      color:#fff;
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-weight: 600;
+    }
+    .returnBtn:hover{ background: var(--primaryHover); }
+
+    /* Overlay */
     .overlay{
       position:fixed;
       inset:0;
@@ -276,80 +194,55 @@
       box-shadow:0 18px 50px rgba(0,0,0,.25);
       padding:18px;
     }
-    .modal h3{
-      margin:0 0 8px;
-      font-size:16px;
-    }
-    .modal p{
-      margin:0 0 12px;
-      color:var(--muted);
-      font-size:14px;
-      line-height:1.55;
-    }
-    .modal .row{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      justify-content:flex-end;
-    }
+    .modal h3{ margin:0 0 8px; font-size:16px; }
+    .modal p{ margin:0 0 12px; color:var(--muted); font-size:14px; line-height:1.55; }
+    .modal .row2{ display:flex; justify-content:flex-end; gap:10px; flex-wrap:wrap; }
 
-    @media (min-width: 980px){
-      .card{ padding: 28px; }
-    }
   </style>
 </head>
 
 <body>
   <div class="page">
     <div class="card">
-      <h1 class="title">🎙️ Record your voice</h1>
+      <h1 class="title">✍️ TOEIC Writing – Part 1</h1>
       <div class="subtitle">
-        Click <strong>Start recording</strong>, then read the text below aloud.
+        Write <strong>one sentence</strong> based on the picture using the <strong>two words</strong> provided.
       </div>
 
-      <div class="prompt" id="promptBox">
-        <h2>📄 Text to read aloud</h2>
+      <div class="prompt">
+        <h2>🖼️ Picture prompt</h2>
+        <p>(Insert your picture here in Rise, or describe it briefly here.)</p>
 
-        <p class="promptText" id="promptText">Please note that the office will be closed on Friday afternoon for scheduled maintenance.
-Employees are asked to complete any urgent tasks before noon.</p>
-
-        <p class="instruction">
-          You have 45 seconds to prepare (read the text silently). You will then have 45 seconds to read the text aloud.
-        </p>
+        <div class="words">
+          <strong>Words to use:</strong> <em id="words">schedule – discuss</em>
+        </div>
       </div>
 
-      <div class="meta">
-        <div class="pill"><span>⏱️</span><span class="timer" id="timer">00:00</span></div>
-        <div class="pill"><span>ℹ️</span><span id="status">Ready</span></div>
-      </div>
+      <h2 style="font-size:14px; margin:0 0 8px;">Your sentence</h2>
+      <textarea id="answer" placeholder="Type your sentence here..."></textarea>
 
-      <div class="controls">
-        <button id="start" class="btnPrimary">Start recording</button>
-        <button id="stop" class="btnDanger" disabled>Stop</button>
-        <button id="reset" class="btnGhost" disabled>Reset</button>
-        <button id="keep" class="btnSuccess" disabled>Save this take</button>
-      </div>
+      <div class="row">
+        <div class="leftBtns">
+          <button class="btnSuccess" id="saveBtn">💾 Save draft</button>
+          <button class="btnGhost" id="copyBtn">📋 Copy</button>
+          <button class="btnGhost" id="downloadBtn">⬇️ Download</button>
+          <button class="btnDanger" id="clearBtn">🗑️ Clear</button>
+        </div>
 
-      <audio id="player" controls></audio>
-
-      <div class="bottomBar">
-        <button id="download" class="btnDownload" disabled>⬇️ Download this take</button>
-        <div class="spacer"></div>
-        <button id="returnBtn" class="btnReturn">↩️ Return to the module</button>
+        <div class="statusline" id="status">Draft not saved yet.</div>
       </div>
 
       <div class="hint">
-        If your browser asks for permission, allow microphone access. After recording, listen to your take, then return to the module.
+        Your writing is stored only on this device/browser. If you want to keep it, download it and rename the file.
+        On a shared computer, clear your text before leaving.
       </div>
 
-      <div class="saved">
-        <h3>Saved takes</h3>
-        <div class="savedList" id="savedList"></div>
+      <div class="returnWrap">
+        <button class="returnBtn" id="returnBtn">⬅️ Return to the module</button>
       </div>
     </div>
   </div>
 
-  <!-- PRO overlay -->
   <div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
     <div class="modal">
       <h3 id="modalTitle">Return to the module</h3>
@@ -357,352 +250,92 @@ Employees are asked to complete any urgent tasks before noon.</p>
         Your browser may block automatic tab closing.
         Please <strong>close this tab manually</strong> to return to the e-learning module.
       </p>
-      <div class="row">
-        <button id="okBtn" class="btnPrimary">OK</button>
+      <div class="row2">
+        <button class="btnPrimary" id="okBtn">OK</button>
       </div>
     </div>
   </div>
 
   <script>
-    /***********************
-     * IndexedDB (persist takes)
-     ***********************/
-    const DB_NAME = "toeic_recorder_db";
-    const DB_VERSION = 1;
-    const STORE = "takes";
+    const answer = document.getElementById("answer");
+    const status = document.getElementById("status");
 
-    function openDB(){
-      return new Promise((resolve, reject) => {
-        const req = indexedDB.open(DB_NAME, DB_VERSION);
-        req.onupgradeneeded = () => {
-          const db = req.result;
-          if(!db.objectStoreNames.contains(STORE)){
-            const store = db.createObjectStore(STORE, { keyPath: "id", autoIncrement: true });
-            store.createIndex("createdAt", "createdAt");
-          }
-        };
-        req.onsuccess = () => resolve(req.result);
-        req.onerror = () => reject(req.error);
-      });
-    }
+    const saveBtn = document.getElementById("saveBtn");
+    const copyBtn = document.getElementById("copyBtn");
+    const downloadBtn = document.getElementById("downloadBtn");
+    const clearBtn = document.getElementById("clearBtn");
 
-    async function addTakeToDB({ blob, durationSec }){
-      const db = await openDB();
-      return new Promise((resolve, reject) => {
-        const tx = db.transaction(STORE, "readwrite");
-        const store = tx.objectStore(STORE);
-        const req = store.add({
-          blob,
-          durationSec,
-          createdAt: Date.now()
-        });
-        req.onsuccess = () => resolve(req.result);
-        req.onerror = () => reject(req.error);
-      });
-    }
+    const returnBtn = document.getElementById("returnBtn");
+    const overlay = document.getElementById("overlay");
+    const okBtn = document.getElementById("okBtn");
 
-    async function getAllTakesFromDB(){
-      const db = await openDB();
-      return new Promise((resolve, reject) => {
-        const tx = db.transaction(STORE, "readonly");
-        const store = tx.objectStore(STORE);
-        const req = store.getAll();
-        req.onsuccess = () => resolve(req.result || []);
-        req.onerror = () => reject(req.error);
-      });
-    }
+    const STORAGE_KEY = "toeic_writing_part1_draft";
 
-    async function deleteTakeFromDB(id){
-      const db = await openDB();
-      return new Promise((resolve, reject) => {
-        const tx = db.transaction(STORE, "readwrite");
-        const store = tx.objectStore(STORE);
-        const req = store.delete(id);
-        req.onsuccess = () => resolve(true);
-        req.onerror = () => reject(req.error);
-      });
-    }
-
-    /***********************
-     * UI + Recorder
-     ***********************/
-    const startBtn = document.getElementById("start");
-    const stopBtn  = document.getElementById("stop");
-    const resetBtn = document.getElementById("reset");
-    const keepBtn  = document.getElementById("keep");
-    const dlBtn    = document.getElementById("download");
-    const returnBtn= document.getElementById("returnBtn");
-
-    const player   = document.getElementById("player");
-    const timerEl  = document.getElementById("timer");
-    const statusEl = document.getElementById("status");
-    const savedList= document.getElementById("savedList");
-
-    const overlay  = document.getElementById("overlay");
-    const okBtn    = document.getElementById("okBtn");
-
-    let mediaRecorder = null;
-    let chunks = [];
-    let stream = null;
-
-    let seconds = 0;
-    let timerInterval = null;
-
-    let currentBlob = null;
-    let currentUrl = null;
-
-    function pad(n){ return String(n).padStart(2,"0"); }
-    function setTimer(sec){
-      const m = Math.floor(sec / 60);
-      const s = sec % 60;
-      timerEl.textContent = `${pad(m)}:${pad(s)}`;
-    }
-    function stopTimer(){
-      if(timerInterval){
-        clearInterval(timerInterval);
-        timerInterval = null;
-      }
-    }
-    function stopMic(){
-      if(stream){
-        stream.getTracks().forEach(t => t.stop());
-        stream = null;
-      }
-    }
-
-    function resetCurrentTakeUI(){
-      currentBlob = null;
-      if(currentUrl){
-        URL.revokeObjectURL(currentUrl);
-        currentUrl = null;
-      }
-      player.removeAttribute("src");
-      player.load();
-      dlBtn.disabled = true;
-      keepBtn.disabled = true;
-      resetBtn.disabled = true;
-    }
-
-    function resetUI(){
-      stopTimer();
-      seconds = 0;
-      setTimer(0);
-      statusEl.textContent = "Ready";
-      startBtn.disabled = false;
-      stopBtn.disabled = true;
-      chunks = [];
-      resetCurrentTakeUI();
-    }
-
-    function getSupportedMimeType(){
-      const types = [
-        "audio/webm;codecs=opus",
-        "audio/webm",
-        "audio/ogg;codecs=opus",
-        "audio/ogg"
-      ];
-      return types.find(t => window.MediaRecorder && MediaRecorder.isTypeSupported(t)) || "";
-    }
-
-    function downloadBlob(blob, filename){
-      const a = document.createElement("a");
-      const url = URL.createObjectURL(blob);
-      a.href = url;
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      setTimeout(() => URL.revokeObjectURL(url), 500);
+    function setStatus(msg){
+      status.textContent = msg;
     }
 
     function showOverlay(){ overlay.style.display = "flex"; }
     function hideOverlay(){ overlay.style.display = "none"; }
 
     okBtn.addEventListener("click", hideOverlay);
-    overlay.addEventListener("click", (e) => {
-      if(e.target === overlay) hideOverlay();
+    overlay.addEventListener("click", (e) => { if(e.target === overlay) hideOverlay(); });
+
+    // Load draft
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if(saved){
+      answer.value = saved;
+      setStatus("Draft restored from this device.");
+    }
+
+    saveBtn.addEventListener("click", () => {
+      localStorage.setItem(STORAGE_KEY, answer.value);
+      setStatus("Draft saved on this device.");
     });
 
-    function renderSavedTake({ id, blob, durationSec }, takeNumber){
-      const savedUrl = URL.createObjectURL(blob);
-
-      const item = document.createElement("div");
-      item.className = "savedItem";
-      item.dataset.id = String(id);
-
-      const top = document.createElement("div");
-      top.className = "savedTop";
-
-      const label = document.createElement("div");
-      label.className = "savedLabel";
-      label.innerHTML = `<strong>Take ${takeNumber}</strong> <span class="tag">• ${durationSec}s</span>`;
-
-      const actions = document.createElement("div");
-      actions.className = "savedActions";
-
-      const downloadBtn = document.createElement("a");
-      downloadBtn.className = "linkBtn";
-      downloadBtn.href = savedUrl;
-      downloadBtn.download = `speaking-take-${takeNumber}.webm`;
-      downloadBtn.textContent = "⬇️ Download";
-
-      const removeBtn = document.createElement("a");
-      removeBtn.href = "#";
-      removeBtn.className = "linkBtn dangerLink";
-      removeBtn.textContent = "🗑️ Remove";
-      removeBtn.onclick = async (e) => {
-        e.preventDefault();
-        await deleteTakeFromDB(id);
-        URL.revokeObjectURL(savedUrl);
-        item.remove();
-        statusEl.textContent = "Take removed.";
-        await loadSavedTakes(); // renumber
-      };
-
-      actions.appendChild(downloadBtn);
-      actions.appendChild(removeBtn);
-
-      top.appendChild(label);
-      top.appendChild(actions);
-
-      const audio = document.createElement("audio");
-      audio.controls = true;
-      audio.src = savedUrl;
-
-      item.appendChild(top);
-      item.appendChild(audio);
-
-      return item;
-    }
-
-    async function loadSavedTakes(){
-      savedList.innerHTML = "";
-      const takes = await getAllTakesFromDB();
-      // Sort by creation time ascending => Take 1 at top
-      takes.sort((a,b) => a.createdAt - b.createdAt);
-
-      takes.forEach((t, idx) => {
-        savedList.appendChild(renderSavedTake(t, idx + 1));
-      });
-    }
-
-    // Init
-    resetUI();
-    loadSavedTakes().catch(() => { /* ignore */ });
-
-    startBtn.onclick = async () => {
+    copyBtn.addEventListener("click", async () => {
       try{
-        resetCurrentTakeUI();
-        chunks = [];
-        statusEl.textContent = "Requesting microphone…";
-
-        stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-
-        const mimeType = getSupportedMimeType();
-        mediaRecorder = mimeType ? new MediaRecorder(stream, { mimeType }) : new MediaRecorder(stream);
-
-        mediaRecorder.onstart = () => {
-          statusEl.textContent = "Recording…";
-          startBtn.disabled = true;
-          stopBtn.disabled = false;
-
-          seconds = 0;
-          setTimer(0);
-          stopTimer();
-          timerInterval = setInterval(() => {
-            seconds++;
-            setTimer(seconds);
-          }, 1000);
-        };
-
-        mediaRecorder.ondataavailable = (e) => {
-          if(e.data && e.data.size > 0) chunks.push(e.data);
-        };
-
-        mediaRecorder.onstop = () => {
-          stopTimer();
-          stopBtn.disabled = true;
-          startBtn.disabled = false;
-
-          statusEl.textContent = "Recording finished";
-          resetBtn.disabled = false;
-
-          const blob = new Blob(chunks, { type: mediaRecorder.mimeType || "audio/webm" });
-          currentBlob = blob;
-
-          currentUrl = URL.createObjectURL(blob);
-          player.src = currentUrl;
-
-          dlBtn.disabled = false;
-          keepBtn.disabled = false;
-
-          stopMic();
-        };
-
-        mediaRecorder.start();
-      } catch(err){
-        console.error(err);
-        stopTimer();
-        stopMic();
-        statusEl.textContent = "Microphone blocked or not available";
-        alert("Microphone access is blocked. Please allow microphone permission (lock icon) and reload the page.");
+        await navigator.clipboard.writeText(answer.value);
+        setStatus("Copied to clipboard.");
+      } catch(e){
+        // fallback
+        answer.select();
+        document.execCommand("copy");
+        setStatus("Copied to clipboard.");
       }
-    };
+    });
 
-    stopBtn.onclick = () => {
-      try{
-        statusEl.textContent = "Stopping…";
-        if(mediaRecorder && mediaRecorder.state !== "inactive"){
-          mediaRecorder.stop();
-        } else {
-          statusEl.textContent = "Stopped";
-          startBtn.disabled = false;
-          stopBtn.disabled = true;
-          resetBtn.disabled = false;
-        }
-      } catch(err){
-        console.error(err);
-        statusEl.textContent = "Stop failed";
-      }
-    };
+    downloadBtn.addEventListener("click", () => {
+      const text = answer.value.trim();
+      const blob = new Blob([text], {type:"text/plain"});
+      const url = URL.createObjectURL(blob);
 
-    resetBtn.onclick = () => resetUI();
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `toeic-writing-part1-${new Date().toISOString().slice(0,10)}.txt`;
+      a.click();
 
-    dlBtn.onclick = () => {
-      if(!currentBlob) return;
-      const filename = `speaking-take-${new Date().toISOString().slice(0,19).replace(/[:T]/g,"-")}.webm`;
-      downloadBlob(currentBlob, filename);
-    };
+      URL.revokeObjectURL(url);
+      setStatus("Downloaded.");
+    });
 
-    // PRO return: try close, then show overlay (no alert)
+    clearBtn.addEventListener("click", () => {
+      answer.value = "";
+      localStorage.removeItem(STORAGE_KEY);
+      setStatus("Cleared (and local draft removed).");
+    });
+
     returnBtn.addEventListener("click", (e) => {
       e.preventDefault();
-      statusEl.textContent = "Returning to the module…";
+      setStatus("Returning to the module…");
 
       window.close();
 
       setTimeout(() => {
         showOverlay();
-        statusEl.textContent = "Please close this tab to return to the module.";
+        setStatus("Please close this tab to return to the module.");
       }, 250);
     });
-
-    keepBtn.onclick = async () => {
-      if(!currentBlob) return;
-
-      try{
-        statusEl.textContent = "Saving take…";
-        await addTakeToDB({ blob: currentBlob, durationSec: seconds });
-        await loadSavedTakes();
-
-        statusEl.textContent = "Saved. You can record another one to compare.";
-        keepBtn.disabled = true; // avoid saving same take twice
-      } catch(err){
-        console.error(err);
-        statusEl.textContent = "Save failed (storage blocked?)";
-        alert("Saving failed. Your browser may be blocking storage for this page.");
-      }
-    };
   </script>
 </body>
 </html>
